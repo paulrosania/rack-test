@@ -20,6 +20,10 @@ module Rack
         "You've been redirected"
       end
 
+      get "/external_redirect" do
+        redirect "http://example.edu"
+      end
+
       get "/void" do
         [200, {}, ""]
       end
