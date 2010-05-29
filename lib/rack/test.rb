@@ -151,17 +151,23 @@ module Rack
           raise Error.new("Last response was not a redirect. Cannot follow_redirect!")
         end
 
-        @default_host = URI.parse(last_response["Location"]).host
+        @default_host = absolute_uri_for(last_response["Location"]).host
 
         get(last_response["Location"])
       end
 
     private
+      def absolute_uri_for(uri)
+        uri = URI.parse(uri) if uri.is_a?(String)
+        uri.scheme ||= "http"
+        uri.host   ||= @default_host
+        uri.port   ||= 80
+        uri
+      end
 
       def env_for(path, env)
-        uri = URI.parse(path)
+        uri = absolute_uri_for(path)
         uri.path = "/#{uri.path}" unless uri.path[0] == ?/
-        uri.host ||= @default_host
 
         env["HTTP_HOST"] = "#{uri.host}:#{uri.port}"
 
@@ -205,8 +211,7 @@ module Rack
       end
 
       def process_request(uri, env)
-        uri = URI.parse(uri)
-        uri.host ||= @default_host
+        uri = absolute_uri_for(uri)
 
         @rack_mock_session.request(uri, env)
 
