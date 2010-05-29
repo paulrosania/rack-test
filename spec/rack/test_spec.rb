@@ -277,6 +277,14 @@ describe Rack::Test::Session do
       last_response.body.should == "You've been redirected"
     end
 
+    it "updates the default host" do
+      get "/external_redirect"
+      follow_redirect!
+
+      get "/"
+      puts last_request.host.should == 'example.edu'
+    end
+
     it "does not include params when following the redirect" do
       get "/redirect", { "foo" => "bar" }
       follow_redirect!

@@ -151,6 +151,8 @@ module Rack
           raise Error.new("Last response was not a redirect. Cannot follow_redirect!")
         end
 
+        @default_host = URI.parse(last_response["Location"]).host
+
         get(last_response["Location"])
       end
 
