@@ -161,7 +161,6 @@ module Rack
         uri = URI.parse(uri) if uri.is_a?(String)
         uri.scheme ||= "http"
         uri.host   ||= @default_host
-        uri.port   ||= 80
         uri
       end
 

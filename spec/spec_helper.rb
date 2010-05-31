@@ -51,11 +51,6 @@ describe "any #verb methods", :shared => true do
     send(verb, "/uri")
     last_request.env["HTTP_HOST"].should == "example.org"
   end
-  
-  it "sets the HTTP host during local requests" do
-    send(verb, "/uri")
-    last_request.env["HTTP_HOST"].should == "example.org:80"
-  end
 
   context "for a XHR" do
     it "sends XMLHttpRequest for the X-Requested-With header" do
