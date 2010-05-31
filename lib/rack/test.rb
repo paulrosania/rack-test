@@ -169,7 +169,7 @@ module Rack
         uri = absolute_uri_for(path)
         uri.path = "/#{uri.path}" unless uri.path[0] == ?/
 
-        env["HTTP_HOST"] = "#{uri.host}:#{uri.port}"
+        env["HTTP_HOST"] = [uri.host, uri.port].compact.join(":")
 
         env = default_env.merge(env)
 
